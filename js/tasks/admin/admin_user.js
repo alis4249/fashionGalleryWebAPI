@@ -22,35 +22,28 @@ $(document).ready(function() {
 
 
 
-    $("#user_details").on('click', '#btn_delete', function() {
+    $("#user_details").on('click', '#btn_addTOcart', function() {
 
-        var confirm_btn=confirm("Are you sure?");
+        var isLoggedIn=confirm("Are you sure?");
 
-            if (confirm_btn==true) {
-                user_id = $(this).attr('user_id');
-                alert(user_id);
-                var data = {
-                    _id: user_id
-                }
-
+            if (isLoggedIn.length>0) {
                 $.ajax({
-                    type: 'DELETE',
-                    url: 'http://localhost:8080/user/delete',
+                    type: 'POST',
+                    url: 'http://localhost:8080/product/addtocart',
                     data: data,
-                    // beforeSend: function(xhr) {
-                    //     if (token) {
-                    //         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-                    //     }
-                    // },
                     success: function(data) {
 
-                        location.href = "user_table.html";
+                        
 
                     },
                     error: function() {
-                        alert("error")
+                        alert("error");
                     }
                 })
+
+            }else{
+                alert('You must login');
+                location.href = "login.html";
 
             }
 
