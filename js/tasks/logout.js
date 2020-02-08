@@ -6,10 +6,7 @@ $(document).ready(function() {
         var confirmLogout = window.confirm("Confirm Logout!");
         if (confirmLogout) {
             logout();
-        } else {
-
         }
-
 
     })
 
@@ -23,7 +20,8 @@ $(document).ready(function() {
                 }
             },
             success: function(data) {
-
+                localStorage.setItem('token','');
+                localStorage.setItem('user_id','');
                 window.location.href = "index.html";
 
             },
