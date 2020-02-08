@@ -24,7 +24,7 @@ $(document).ready(function() {
                }
 
                $.ajax({
-                   url: 'http://localhost:8080/user/contact',
+                   url: 'http://localhost:8080/contact/register',
                    type: 'post',
                    dataType: 'json',
                    data: data,
@@ -33,9 +33,9 @@ $(document).ready(function() {
                           alert('Your message is registered.');
                            setTimeout(
                                function(){
-                                $("#user_name").val('');
-                                $("#user_message").val('');
-                                $("#user_email").val('');
+                                // $("#user_name").val('');
+                                // $("#user_email").val('');
+                                $("#contact_user_message").val('');
                                },500
                            );
                        } else {

@@ -15,10 +15,9 @@ $(document).ready(function() {
                    if (user_type == "admin") {
                        window.location.href = "adminindex.html";
                    } 
-                //    else if (user_type == "user") {
-                //        window.location.href = "index.html";
-                //    }
-                //    alert(tokenAvailable)
+                   $('#contact_user_name').val(data.user_name);
+                   $('#contact_user_email').val(data.user_email);
+
                },
                error: function(error) {
    
@@ -33,8 +32,6 @@ $(document).ready(function() {
                ulen=isUserAvailable.length;
            }
                
-           
-console.log("len: "+ulen)
            if(ulen>1){
             $('#loginCoresol').append(
                 '<i class="fa fa-user"></i><button style="background-color: white; border: none;" id="btn_loginCoresol">Logout</button>'

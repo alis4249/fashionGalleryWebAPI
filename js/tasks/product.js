@@ -1,15 +1,22 @@
 $(document).ready(function() {
     var link=window.location.href;
     var valu=link.split('?')[1];
+    var token=localStorage.getItem('token');
+    var usrid=localStorage.getItem('user_id');
+
+    var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
     if(valu=='Male'){
-
         $.getJSON('http://localhost:8080/product/getByCategory/Male', function(res) {
             $('#category-by').append('Category : Male');
 
             $.each(res, function(data) {
               
                 $('#productslist').append(
+                    '<input type="text" id="txt_prodid" value="'+res[data]._id+'" hidden/>'+
+                    
                     '<div class="col-lg-4 col-sm-6">'+
                                     '<div class="product-item">'+
                                         '<div class="pi-pic">'+
@@ -18,7 +25,7 @@ $(document).ready(function() {
                                                 '<i class="icon_heart_alt"></i>'+
                                             '</div>'+
                                             '<ul>'+
-                                                '<li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>'+
+                                                '<li class="w-icon active" id="btn_addTOcart" product_id="'+res[data]._id+'"><a><i class="icon_bag_alt"></i></a></li>'+
                                                 '<li class="quick-view"><a href="product.html?'+res[data]._id+'">+ Quick View</a></li>'+
                                                 '<li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>'+
                                             '</ul>'+
@@ -45,6 +52,7 @@ $(document).ready(function() {
             $.each(res, function(data) {
               
                 $('#productslist').append(
+                    '<input type="text" id="txt_prodid" value="'+res[data]._id+'" hidden/>'+
                     '<div class="col-lg-4 col-sm-6">'+
                                     '<div class="product-item">'+
                                         '<div class="pi-pic">'+
@@ -53,7 +61,7 @@ $(document).ready(function() {
                                                 '<i class="icon_heart_alt"></i>'+
                                             '</div>'+
                                             '<ul>'+
-                                                '<li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>'+
+                                                '<li class="w-icon active" id="btn_addTOcart" product_id="'+res[data]._id+'"><a><i class="icon_bag_alt"></i></a></li>'+
                                                 '<li class="quick-view"><a href="product.html?'+res[data]._id+'">+ Quick View</a></li>'+
                                                 '<li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>'+
                                             '</ul>'+
@@ -81,6 +89,8 @@ $(document).ready(function() {
             $.each(res, function(data) {
               
                 $('#productslist').append(
+                '<input type="text" id="txt_prodid" value="'+res[data]._id+'" hidden/>'+
+
                     '<div class="col-lg-4 col-sm-6">'+
                                     '<div class="product-item">'+
                                         '<div class="pi-pic">'+
@@ -89,7 +99,7 @@ $(document).ready(function() {
                                                 '<i class="icon_heart_alt"></i>'+
                                             '</div>'+
                                             '<ul>'+
-                                                '<li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>'+
+                                                '<li class="w-icon active" id="btn_addTOcart" product_id="'+res[data]._id+'"><a><i class="icon_bag_alt"></i></a></li>'+
                                                 '<li class="quick-view"><a href="product.html?'+res[data]._id+'">+ Quick View</a></li>'+
                                                 '<li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>'+
                                             '</ul>'+
@@ -112,6 +122,8 @@ $(document).ready(function() {
             $.each(res, function(data) {
               
                 $('#productslist').append(
+                '<input type="text" id="txt_prodid" value="'+res[data]._id+'" hidden/>'+
+
                     '<div class="col-lg-4 col-sm-6">'+
                                     '<div class="product-item">'+
                                         '<div class="pi-pic">'+
@@ -120,7 +132,7 @@ $(document).ready(function() {
                                                 '<i class="icon_heart_alt"></i>'+
                                             '</div>'+
                                             '<ul>'+
-                                                '<li class="w-icon active" id="btn_addTOcart"><a><i class="icon_bag_alt"></i></a></li>'+
+                                                '<li class="w-icon active" id="btn_addTOcart" product_id="'+res[data]._id+'"><a><i class="icon_bag_alt"></i></a></li>'+
                                                 '<li class="quick-view"><a href="product.html?'+res[data]._id+'">+ Quick View</a></li>'+
                                                 '<li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>'+
                                             '</ul>'+
@@ -139,7 +151,6 @@ $(document).ready(function() {
             });
         })
     }
-
 
     $("#productslist").on('click', '#btn_delete', function() {
 
@@ -175,6 +186,54 @@ $(document).ready(function() {
 
 
     })
-           
+
+
+    $("#productslist").on('click', '#btn_addTOcart', function() {
+        var pid=$(this).attr('product_id');
+        // alert(pid)
+        var time=date+' :: '+time;
+        var data={
+            product_id:pid,
+            user_id:usrid,
+            time:time
+        }
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:8080/product/addtocart',
+                    data: data,
+                    beforeSend: function(xhr) {
+                        if (token) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                        }
+                    },
+                    success: function(data) {
+
+                        alert("Selected item is added to cart");
+
+                    },
+                    error: function() {
+                        alert("You must first log in!")
+                    }
+                })
+    })
+
+
+        $.getJSON('http://localhost:8080/cart/get/'+usrid, function(res) {
+            // alert(usrid)
+            $.each(res, function(data) {
+                console.log(res[data].product_id)
+                // $('#productslist').append(
+
+                // );
+    
+                
+            });
+        })
+
+    //   $("#shoppingBag").mouseout(function(){
+    //     $("p").css("background-color", "lightgray");
+    //   });
+
+
 
 });
