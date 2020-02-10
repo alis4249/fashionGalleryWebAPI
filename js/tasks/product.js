@@ -181,6 +181,30 @@ $(document).ready(function() {
 
         })
 
+        $.getJSON('http://localhost:8080/product/get/'+valu, function(res) {
+            
+            $('#show_product_img').append(
+                '<img class="product-big-img" src="http://localhost:8080/assets/images/product/'+res.product_image+'" alt="">'+
+                                '<div class="zoom-icon">'+
+                                    '<i class="fa fa-search-plus"></i>'+
+                                '</div>'
+            )
+            
+            $('#show_title').append(
+                res.product_name
+            )
+            $('#show_description').append(
+                res.product_description
+            )
+            $('#show_price').append(
+                res.product_price
+            )
+            $('#show_categories').append(
+                res.product_category
+            )
+    
+            })
+    
 
     $("#productslist").on('click', '#btn_addTOcart', function() {
         var pid=$(this).attr('product_id');
